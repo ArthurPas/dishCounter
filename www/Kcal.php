@@ -11,14 +11,14 @@ class Kcal
         $this->conn = $db;
     }
 
-    public function getTestKcal()
+    public function getDailyKcal()
     {
         $sqlQuery = "SELECT number FROM " . $this->db_table . "";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->execute();
         return $stmt;
     }
-    public function postTestKcal(){
+    public function postDailyKcal(){
         $sqlQuery = "INSERT INTO ". $this->db_table ."(number, date) VALUES (:number, :now)";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bindParam(":number", $this->number);

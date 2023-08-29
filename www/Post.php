@@ -14,7 +14,7 @@ $item->number = intval($_GET["kcal"]);
 $item->today= date("Y-m-d");
 
 // create the department
-if ($item->postTestKcal()) {
+if ($item->postDailyKcal()) {
     echo '{';
     echo '"message": "Department was created."';
     echo '}';

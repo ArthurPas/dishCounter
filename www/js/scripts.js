@@ -72,19 +72,19 @@
 
 })(jQuery);
 
-var KCALBIGMAC = 504
-var KCALPIZZA = 1000
-var KCALTACOS= 1350
-var KCALLITREFUZE = 66
+const KCALBIGMAC = 504
+const KCALPIZZA = 1000
+const KCALTACOS= 1350
+const KCALCANFUZE = 66
 
 function createImagesWithNb(nb,path,dish){
     
-    if(nb<5 && nb!==1) {
+    if(nb<4 && nb!==1) {
         for (let i = 0; i < nb; i++) {
             let div = document.getElementById(dish)
             let image = new Image();
             image.src = path;
-            image.style.width = (((div.offsetWidth / nb) - 7) * 2).toString() + "px"
+            image.style.width = ((((div.offsetWidth / nb)) * 2)).toString() + "px"
             image.style.height = "10em"
             div.appendChild(image);
         }
@@ -102,17 +102,22 @@ function createImagesWithNb(nb,path,dish){
         }
     }
 }
-function CalcPercentageDish(kcalBurned){
-    var nbBigM = Math.round(kcalBurned/KCALBIGMAC)
-    var nbPizza= Math.round(kcalBurned/KCALPIZZA)
-    var nbTacos =Math.round(kcalBurned/KCALTACOS)
-    var nbFuzeTea = Math.round(kcalBurned/KCALLITREFUZE)
-
+function calcPercentageDish(kcalBurned){
+    const nbBigM = Math.round(kcalBurned/KCALBIGMAC)
+    const nbPizza= Math.round(kcalBurned/KCALPIZZA)
+    const nbTacos =Math.round(kcalBurned/KCALTACOS)
+    const nbFuzeTea = Math.round(kcalBurned/KCALCANFUZE)
     createImagesWithNb(nbBigM,"images/bigMac.png","allBigM")
     createImagesWithNb(nbPizza,"images/pizza.png","allPizza")
     createImagesWithNb(nbTacos,"images/tacos.png","allTacos")
     createImagesWithNb(nbFuzeTea,"images/iceTea.png","allFuze")
+}
 
+function calcAllDishes(totalKcal){
+    createImagesWithNb(Math.round(totalKcal/KCALBIGMAC),"images/bigMac.png","allTimeBigM")
+    createImagesWithNb(Math.round(totalKcal/KCALPIZZA),"images/pizza.png","allTimePizza")
+    createImagesWithNb(Math.round(totalKcal/KCALTACOS),"images/tacos.png","allTimeTacos")
+    createImagesWithNb(Math.round(totalKcal/KCALCANFUZE),"images/iceTea.png","allTimeFuze")
 }
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -122,12 +127,23 @@ function getRandomColor() {
     }
     return color;
 }
-const myRequest = new Request("https://devapascal.fr/Read.php");
-fetch(myRequest)
+const requestDailyKcal = new Request("https://devapascal.fr/Read.php");
+fetch(requestDailyKcal)
     .then((response) => response.json())
     .then((data) => {
         var kcal= document.getElementById("todayKcal")
         kcal.innerText = data.kcal["value"]
-        CalcPercentageDish(data.kcal["value"])
+        calcPercentageDish(data.kcal["value"])
         kcal.style.color = getRandomColor()
     })
+
+const requestTotalKcal = new Request("https://devapascal.fr/Read.php");
+fetch(requestTotalKcal)
+    .then((response) => response.json())
+    .then((data) => {
+        var kcal= document.getElementById("allTimeKcal")
+        kcal.innerText = data.kcal["total"]
+        calcAllDishes(data.kcal["total"])
+        kcal.style.color = getRandomColor()
+    })
+
