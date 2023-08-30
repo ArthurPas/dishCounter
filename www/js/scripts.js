@@ -113,11 +113,27 @@ function calcPercentageDish(kcalBurned){
     createImagesWithNb(nbFuzeTea,"images/iceTea.png","allFuze")
 }
 
-function calcAllDishes(totalKcal){
+function calcAllTimeDishes(totalKcal){
     createImagesWithNb(Math.round(totalKcal/KCALBIGMAC),"images/bigMac.png","allTimeBigM")
     createImagesWithNb(Math.round(totalKcal/KCALPIZZA),"images/pizza.png","allTimePizza")
     createImagesWithNb(Math.round(totalKcal/KCALTACOS),"images/tacos.png","allTimeTacos")
     createImagesWithNb(Math.round(totalKcal/KCALCANFUZE),"images/iceTea.png","allTimeFuze")
+}
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+function calcChosenTimeDishes(totalKcal){
+    removeAllChildNodes(document.getElementById("chosenTimeBigM"));
+    removeAllChildNodes(document.getElementById("chosenTimePizza"));
+    removeAllChildNodes(document.getElementById("chosenTimeTacos"));
+    removeAllChildNodes(document.getElementById("chosenTimeFuze"));
+    createImagesWithNb(Math.round(totalKcal/KCALBIGMAC),"images/bigMac.png","chosenTimeBigM")
+    createImagesWithNb(Math.round(totalKcal/KCALPIZZA),"images/pizza.png","chosenTimePizza")
+    createImagesWithNb(Math.round(totalKcal/KCALTACOS),"images/tacos.png","chosenTimeTacos")
+    createImagesWithNb(Math.round(totalKcal/KCALCANFUZE),"images/iceTea.png","chosenTimeFuze")
 }
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -143,7 +159,23 @@ fetch(requestTotalKcal)
     .then((data) => {
         var kcal= document.getElementById("allTimeKcal")
         kcal.innerText = data.kcal["total"]
-        calcAllDishes(data.kcal["total"])
+        calcAllTimeDishes(data.kcal["total"])
         kcal.style.color = getRandomColor()
     })
+const calendarStart = document.getElementById("startDate");
 
+function onStartDateChange() {
+    let chosenDate = calendarStart.value
+    const requestKcalOnStartDate = new Request("https://devapascal.fr/Read.php?dateStart="+chosenDate);
+    fetch(requestKcalOnStartDate)
+        .then((response) => response.json())
+        .then((data) => {
+            var kcalFromDate= document.getElementById("kcalFromDate")
+            kcalFromDate.innerText = data.kcal["onDate"]
+            calcChosenTimeDishes(data.kcal["onDate"])
+            kcalFromDate.style.color = getRandomColor()
+        })
+
+}
+calendarStart.addEventListener("change", onStartDateChange);
+let today = new Date().toJSON().slice(0, 10);

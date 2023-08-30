@@ -13,7 +13,7 @@ class Kcal
 
     public function getDailyKcal()
     {
-        $sqlQuery = "SELECT number FROM " . $this->db_table . "";
+        $sqlQuery = "SELECT number FROM " . $this->db_table;
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->execute();
         return $stmt;
@@ -27,5 +27,12 @@ class Kcal
             return true;
         }
         return false;
+    }
+    public function getKcalFromDate($dateR){
+        $sqlQueryFromDate =  "SELECT * FROM ".$this->db_table." WHERE dateRecord <= :paraDate";
+        $stmtDate = $this->conn->prepare($sqlQueryFromDate);
+        $stmtDate ->bindParam(":paraDate", $dateR);
+        $stmtDate->execute();
+        return $stmtDate;
     }
 }
