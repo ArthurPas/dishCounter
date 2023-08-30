@@ -116,6 +116,9 @@ function createImagesWithNb(nb,path,dish) {
             partialImage.setAttribute("width", ((nbPartialDish * nbPxImgWidth)+"px"))
             divImg.appendChild(partialImage);
             //:TODO find how to cut the image and not just change its witdh
+            let nbTitle = document.createElement("b")
+            nbTitle.innerText = "+" + nbPartialDish.toFixed(1)
+            divImg.appendChild(nbTitle);
         }
         }else{
         let divImg = document.getElementById(dish)
