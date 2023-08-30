@@ -40,31 +40,32 @@
                     </div>
                 </div>
                 <!-- /# row -->
+                <!-- :TODO the <canvas> are still here if I see a way to make partial image better with canvas -->
                 <section id="main-content">
                     <h2 class="label" >Bilan du jour : <b class="label" id="todayKcal"></b> kcal</h2>
                     <div class="row">
                         <div class="col-lg-3">
-                            <div class="card foodCard">
-                                <div id="allBigM">
-                                </div>
-                            </div>
+                            <div class="card ">
+                                <div id="allBigM"> </div>
+                        </div>
+                            <canvas id="partialAllBigM"></canvas>
                         </div>
                         <div class="col-lg-3">
-                            <div class="card foodCard">
-                                <div id="allPizza">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="card">
-                                <div id="allTacos">
-                                </div>
+                            <div class="card ">
+                                <div id="allPizza"></div>
+                                <canvas id="partialAllPizza"></canvas>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="card">
-                                <div id="allFuze">
-                                </div>
+                                <div id="allTacos"></div>
+                                <canvas id="partialAllTacos"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div id="allFuze"></div>
+                                <canvas id="partialAllFuze"></canvas>
                             </div>
                         </div>
                     </div>
@@ -74,27 +75,27 @@
                     <h2 class="label" >Bilan depuis le TODO : <b class="label" id="allTimeKcal"></b> kcal</h2>
                     <div class="row">
                         <div class="col-lg-3">
-                            <div class="card foodCard">
-                                <div id="allTimeBigM">
-                                </div>
+                            <div class="card ">
+                                <div id="allTimeBigM"></div>
+                                <canvas id="partialAllTimeBigM"></canvas>
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="card foodCard">
-                                <div id="allTimePizza">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="card">
-                                <div id="allTimeTacos">
-                                </div>
+                            <div class="card ">
+                                <div id="allTimePizza"></div>
+                                <canvas id="partialAllTimePizza"></canvas>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="card">
-                                <div id="allTimeFuze">
-                                </div>
+                                <div id="allTimeTacos"></div>
+                                <canvas id="partialAllTimeTacos"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div id="allTimeFuze"></div>
+                                <canvas id="partialAllTimeFuze"></canvas>
                             </div>
                         </div>
                     </div>
@@ -102,30 +103,30 @@
 
                 <!--Bilan ALLTIME -->
                 <section id="AllFromDate">
-                    <h2 class="label" >Bilan depuis le <input class="caldr" type="date" id="startDate" name="startDate" value="TODO" min="2023-08-01" /><b id="kcalFromDate"></b> : kcal</h2>
+                    <h2 class="label" >Bilan depuis le <input class="caldr" type="date" id="startDate" name="startDate"  /><b id="kcalFromDate"></b> : kcal</h2>
                     <div class="row">
                         <div class="col-lg-3">
-                            <div class="card foodCard">
-                                <div id="chosenTimeBigM">
-                                </div>
+                            <div class="card ">
+                                <div id="chosenTimeBigM"></div>
+                                <canvas id="partialChosenTimeBigM"></canvas>
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="card foodCard">
-                                <div id="chosenTimePizza">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="card">
-                                <div id="chosenTimeTacos">
-                                </div>
+                            <div class="card ">
+                                <div id="chosenTimePizza"></div>
+                                <canvas id="partialChosenTimePizza"></canvas>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="card">
-                                <div id="chosenTimeFuze">
-                                </div>
+                                <div id="chosenTimeTacos"></div>
+                                <canvas id="partialChosenTimeTacos"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div id="chosenTimeFuze"></div>
+                                <canvas id="partialChosenPartialTimeFuze"></canvas>
                             </div>
                         </div>
                     </div>

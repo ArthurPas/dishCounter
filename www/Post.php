@@ -9,21 +9,17 @@ include_once 'Kcal.php';
 $database = new Database();
 $db = $database->getConnection();
 $item = new Kcal($db);
-
 $item->number = intval($_GET["kcal"]);
-$item->today= date("Y-m-d");
+$item->dateRecord= date("Y-m-d");
 
-// create the department
 if ($item->postDailyKcal()) {
     echo '{';
-    echo '"message": "Department was created."';
+    echo '"message": "Data sent"';
     echo '}';
 }
-
-// if unable to create the department, tell the user
 else {
     echo '{';
-    echo '"message": "Unable to create department."';
+    echo '"message": "Unable to sent data."';
     echo '}';
 }
 

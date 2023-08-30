@@ -77,63 +77,11 @@ const KCALPIZZA = 1000
 const KCALTACOS= 1350
 const KCALCANFUZE = 66
 
-function createImagesWithNb(nb,path,dish){
-    
-    if(nb<4 && nb!==1) {
-        for (let i = 0; i < nb; i++) {
-            let div = document.getElementById(dish)
-            let image = new Image();
-            image.src = path;
-            image.style.width = ((((div.offsetWidth / nb)) * 2)).toString() + "px"
-            image.style.height = "10em"
-            div.appendChild(image);
-        }
-    }else{
-        let div = document.getElementById(dish)
-        let image = new Image();
-        image.src = path;
-        image.style.width = "10em"
-        image.style.height = "10em"
-        div.appendChild(image)
-        if(nb!==1) {
-            var nbTitle = document.createElement("h1")
-            nbTitle.innerText = "x" + nb
-            div.appendChild(nbTitle);
-        }
-    }
-}
-function calcPercentageDish(kcalBurned){
-    const nbBigM = Math.round(kcalBurned/KCALBIGMAC)
-    const nbPizza= Math.round(kcalBurned/KCALPIZZA)
-    const nbTacos =Math.round(kcalBurned/KCALTACOS)
-    const nbFuzeTea = Math.round(kcalBurned/KCALCANFUZE)
-    createImagesWithNb(nbBigM,"images/bigMac.png","allBigM")
-    createImagesWithNb(nbPizza,"images/pizza.png","allPizza")
-    createImagesWithNb(nbTacos,"images/tacos.png","allTacos")
-    createImagesWithNb(nbFuzeTea,"images/iceTea.png","allFuze")
-}
-
-function calcAllTimeDishes(totalKcal){
-    createImagesWithNb(Math.round(totalKcal/KCALBIGMAC),"images/bigMac.png","allTimeBigM")
-    createImagesWithNb(Math.round(totalKcal/KCALPIZZA),"images/pizza.png","allTimePizza")
-    createImagesWithNb(Math.round(totalKcal/KCALTACOS),"images/tacos.png","allTimeTacos")
-    createImagesWithNb(Math.round(totalKcal/KCALCANFUZE),"images/iceTea.png","allTimeFuze")
-}
+//Useful functions
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
-}
-
-function calcChosenTimeDishes(totalKcal){
-    removeAllChildNodes(document.getElementById("chosenTimeBigM"));
-    removeAllChildNodes(document.getElementById("chosenTimePizza"));
-    removeAllChildNodes(document.getElementById("chosenTimeTacos"));
-    removeAllChildNodes(document.getElementById("chosenTimeFuze"));
-    createImagesWithNb(Math.round(totalKcal/KCALBIGMAC),"images/bigMac.png","chosenTimeBigM")
-    createImagesWithNb(Math.round(totalKcal/KCALPIZZA),"images/pizza.png","chosenTimePizza")
-    createImagesWithNb(Math.round(totalKcal/KCALTACOS),"images/tacos.png","chosenTimeTacos")
-    createImagesWithNb(Math.round(totalKcal/KCALCANFUZE),"images/iceTea.png","chosenTimeFuze")
 }
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -143,6 +91,79 @@ function getRandomColor() {
     }
     return color;
 }
+const container = document.querySelector(".card")
+function createImagesWithNb(nb,path,dish) {
+    let divImg = document.getElementById(dish)
+    let nbPxImgWidth = 0
+    if (nb < 5 && nb>=1  ) {
+        for (let i = 1; i < nb; i++) {
+            let image = new Image();
+            image.src = path;
+            nbPxImgWidth=((container.offsetWidth / Math.trunc(nb)))
+            nbPxImgWidth=nbPxImgWidth-(nbPxImgWidth*(15/100)) // 15% is chosen 'randomly' for the margin we take a bit less to have 2 on the same row
+            image.style.width = nbPxImgWidth.toString() + "px"
+            console.log(nbPxImgWidth+" nbPx "+dish)
+            image.style.height = "10em"
+            divImg.appendChild(image);
+        }
+        let nbPartialDish =nb - Math.trunc(nb)
+        console.log(nbPartialDish + " " + nb)
+        if(nbPartialDish>0) {
+            let partialImage = new Image();
+            console.log((container.offsetWidth / nb)+" "+dish)
+            partialImage.style.height = "10em"
+            partialImage.src = path;
+            partialImage.setAttribute("width", ((nbPartialDish * nbPxImgWidth)+"px"))
+            divImg.appendChild(partialImage);
+            //:TODO find how to cut the image and not just change its witdh
+        }
+        }else{
+        let divImg = document.getElementById(dish)
+        let image = new Image();
+        image.src = path;
+        image.style.width = "10em"
+        image.style.height = "10em"
+        divImg.appendChild(image)
+        if(nb!==1) {
+            var nbTitle = document.createElement("h1")
+            nbTitle.innerText = "x" + nb
+            divImg.appendChild(nbTitle);
+        }
+    }
+}
+
+// Kcal Calc
+function calcPercentageDish(kcalBurned){
+    const nbBigM = (kcalBurned/KCALBIGMAC).toFixed(1)
+    const nbPizza= (kcalBurned/KCALPIZZA).toFixed(1)
+    const nbTacos =(kcalBurned/KCALTACOS).toFixed(1)
+    const nbFuzeTea = (kcalBurned/KCALCANFUZE).toFixed(1)
+    createImagesWithNb(nbBigM,"images/bigMac.png","allBigM")
+    createImagesWithNb(nbPizza,"images/pizza.png","allPizza")
+    createImagesWithNb(nbTacos,"images/tacos.png","allTacos")
+    createImagesWithNb(nbFuzeTea,"images/iceTea.png","allFuze")
+}
+
+function calcAllTimeDishes(totalKcal){
+    createImagesWithNb((totalKcal/KCALBIGMAC).toFixed(1),"images/bigMac.png","allTimeBigM")
+    createImagesWithNb((totalKcal/KCALPIZZA).toFixed(1),"images/pizza.png","allTimePizza")
+    createImagesWithNb((totalKcal/KCALTACOS).toFixed(1),"images/tacos.png","allTimeTacos")
+    createImagesWithNb((totalKcal/KCALCANFUZE).toFixed(1),"images/iceTea.png","allTimeFuze")
+}
+
+function calcChosenTimeDishes(totalKcal){
+    removeAllChildNodes(document.getElementById("chosenTimeBigM"));
+    removeAllChildNodes(document.getElementById("chosenTimePizza"));
+    removeAllChildNodes(document.getElementById("chosenTimeTacos"));
+    removeAllChildNodes(document.getElementById("chosenTimeFuze"));
+    createImagesWithNb((totalKcal/KCALBIGMAC).toFixed(1),"images/bigMac.png","chosenTimeBigM")
+    createImagesWithNb((totalKcal/KCALPIZZA).toFixed(1),"images/pizza.png","chosenTimePizza")
+    createImagesWithNb((totalKcal/KCALTACOS).toFixed(1),"images/tacos.png","chosenTimeTacos")
+    createImagesWithNb((totalKcal/KCALCANFUZE).toFixed(1),"images/iceTea.png","chosenTimeFuze")
+}
+
+//Requests
+
 const requestDailyKcal = new Request("https://devapascal.fr/Read.php");
 fetch(requestDailyKcal)
     .then((response) => response.json())
@@ -162,8 +183,12 @@ fetch(requestTotalKcal)
         calcAllTimeDishes(data.kcal["total"])
         kcal.style.color = getRandomColor()
     })
-const calendarStart = document.getElementById("startDate");
 
+//Calendar
+const calendarStart = document.getElementById("startDate");
+const today = new Date()
+calendarStart.max = today.toJSON().slice(0, 10);
+calendarStart.min = "2023-08-01" //:TODO @1st september set to 2023-09-01 for real datas
 function onStartDateChange() {
     let chosenDate = calendarStart.value
     const requestKcalOnStartDate = new Request("https://devapascal.fr/Read.php?dateStart="+chosenDate);
@@ -177,5 +202,6 @@ function onStartDateChange() {
         })
 
 }
+
 calendarStart.addEventListener("change", onStartDateChange);
-let today = new Date().toJSON().slice(0, 10);
+
