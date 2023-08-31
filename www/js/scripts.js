@@ -165,6 +165,28 @@ function calcChosenTimeDishes(totalKcal){
     createImagesWithNb((totalKcal/KCALCANFUZE).toFixed(1),"images/iceTea.png","chosenTimeFuze")
 }
 
+//Competion Tab
+
+const tbody = document.getElementById("competTabBody")
+function createCompeteTab(dataTab){
+    dataTab.sort((a, b) => b.total - a.total);
+    let i = 1
+    for(let data of dataTab){
+        let tr = document.createElement("tr")
+        tbody.appendChild(tr)
+        let tdRank = document.createElement("td")
+        let tdName = document.createElement("td")
+        let tdTotal = document.createElement("td")
+        tdRank.innerText = i.toString()
+        tdName.innerText = data["user"]
+        tdTotal.innerText = data["total"]
+        tr.appendChild(tdRank)
+        tr.appendChild(tdName)
+        tr.appendChild(tdTotal)
+        i++
+    }
+}
+
 //Requests
 
 const requestDailyKcal = new Request("https://devapascal.fr/Read.php");
@@ -172,19 +194,27 @@ fetch(requestDailyKcal)
     .then((response) => response.json())
     .then((data) => {
         var kcal= document.getElementById("todayKcal")
-        kcal.innerText = data.user1.kcal["value"]
-        calcPercentageDish(data.user1.kcal["value"])
+        kcal.innerText = data[0]["todayValue"] //:TODO replace "user1" by a login system
+        calcPercentageDish(data[0]["todayValue"])
         kcal.style.color = getRandomColor()
     })
 
-const requestTotalKcal = new Request("https://devapascal.fr/Read.php");
+const requestTotalKcal = new Request("https://devapascal.fr/Read.php"); //TODO: add for the request the loginId of the user
 fetch(requestTotalKcal)
     .then((response) => response.json())
     .then((data) => {
-        var kcal= document.getElementById("allTimeKcal")
-        kcal.innerText = data.user1.kcal["total"]
-        calcAllTimeDishes(data.user1.kcal["total"])
+        let kcal= document.getElementById("allTimeKcal")
+        kcal.innerText = data[0]["total"]
+        calcAllTimeDishes(data[0]["total"])
         kcal.style.color = getRandomColor()
+    })
+
+const requestAllTotalKcal = new Request("https://devapascal.fr/Read.php"); //TODO: add for the request the loginId of the user
+fetch(requestAllTotalKcal)
+    .then((response) => response.json())
+    .then((data) => {
+
+        createCompeteTab(data)
     })
 
 //Calendar
@@ -199,12 +229,13 @@ function onStartDateChange() {
         .then((response) => response.json())
         .then((data) => {
             var kcalFromDate= document.getElementById("kcalFromDate")
-            kcalFromDate.innerText = data.user1.kcal["onDate"]
-            calcChosenTimeDishes(data.user1.kcal["onDate"])
+            kcalFromDate.innerText = data[0]["onDate"]
+            calcChosenTimeDishes(data[0]["onDate"])
             kcalFromDate.style.color = getRandomColor()
         })
 
 }
 
 calendarStart.addEventListener("change", onStartDateChange);
+
 

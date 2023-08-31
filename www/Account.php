@@ -18,10 +18,17 @@ class Account
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bindParam(":login", $this->login);
         if($stmt->execute()){
-            $id = intval($stmt->fetch()["id"]);
-            return $id;
+            return intval($stmt->fetch()["id"]);
         }
         return 0;
     }
-
+    public function getLoginById($id){
+        $sqlQuery = "SELECT login FROM ". $this->db_table ." WHERE id = :id";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bindParam(":id", $id);
+        if($stmt->execute()){
+            return $stmt->fetch()["login"];
+        }
+        return "unknown";
+    }
 }

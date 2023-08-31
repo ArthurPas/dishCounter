@@ -5,6 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once 'Database.php';
 include_once 'Kcal.php';
 include_once 'Total.php';
+include_once 'Account.php';
 
 $KcalArray = array();
 
@@ -14,23 +15,23 @@ $db = $database->getConnection();
 
 $Total = new Total($db);
 $dailyKcal = new Kcal($db);
-
+$account = new Account($db);
 $stmtAllIds = $dailyKcal->getAllLoginId();
 $rowsCountIds= $stmtAllIds->rowCount();
 if($rowsCountIds>0){
     $ids= $stmtAllIds->fetchAll();
     foreach ($ids as $id){
-        $KcalArray["user".$id["login_id"]] = array();
-        $KcalArray["user".$id["login_id"]]["kcal"] = array();
+        $KcalArrayTmp = array();
+        $KcalArrayTmp["user"]=$account->getLoginById($id["login_id"]);
         $stmtKcTot = $Total->getTotalKcal($id["login_id"]);
-        $KcalArray["user".$id["login_id"]]["kcal"]["total"] = $stmtKcTot->fetch()["kcalTot"];
+        $KcalArrayTmp["total"] = $stmtKcTot->fetch()["kcalTot"];
         $stmtDkcal = $dailyKcal->getDailyKcal($id["login_id"]);
         $rowsCountDaily= $stmtDkcal->rowCount();
         if($rowsCountDaily > 0){
             $rows = $stmtDkcal->fetchAll();
             foreach ($rows as $row){
                 $value = $row["number"];
-                $KcalArray["user".$id["login_id"]]["kcal"]["value"] = $value;
+                $KcalArrayTmp["todayValue"] = $value;
             }
         }
         else{
@@ -48,9 +49,10 @@ if($rowsCountIds>0){
                 foreach ($rows as $row) {
                     $sumKcal += $row["number"];
                 }
-                $KcalArray["user".$id["login_id"]]["kcal"]["onDate"] = $sumKcal;
+                $KcalArrayTmp["onDate"] = $sumKcal;
             }
         }
+        array_push($KcalArray,$KcalArrayTmp);
     }
 }
 
