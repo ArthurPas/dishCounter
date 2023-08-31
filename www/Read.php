@@ -7,7 +7,7 @@ include_once 'Kcal.php';
 include_once 'Total.php';
 
 $KcalArray = array();
-$KcalArray["kcal"] = array();
+
 
 $database = new Database();
 $db = $database->getConnection();
@@ -20,16 +20,17 @@ $rowsCountIds= $stmtAllIds->rowCount();
 if($rowsCountIds>0){
     $ids= $stmtAllIds->fetchAll();
     foreach ($ids as $id){
-        $KcalArray["user".$id] = array();
-        $stmtKcTot = $Total->getTotalKcal($id);
-        $KcalArray["user".$id]["kcal"]["total"] = $stmtKcTot->fetch()["kcalTot"];
-        $stmtDkcal = $dailyKcal->getDailyKcal();
+        $KcalArray["user".$id["login_id"]] = array();
+        $KcalArray["user".$id["login_id"]]["kcal"] = array();
+        $stmtKcTot = $Total->getTotalKcal($id["login_id"]);
+        $KcalArray["user".$id["login_id"]]["kcal"]["total"] = $stmtKcTot->fetch()["kcalTot"];
+        $stmtDkcal = $dailyKcal->getDailyKcal($id["login_id"]);
         $rowsCountDaily= $stmtDkcal->rowCount();
         if($rowsCountDaily > 0){
             $rows = $stmtDkcal->fetchAll();
             foreach ($rows as $row){
                 $value = $row["number"];
-                $KcalArray["user".$id]["kcal"]["value"] = $value;
+                $KcalArray["user".$id["login_id"]]["kcal"]["value"] = $value;
             }
         }
         else{
@@ -38,18 +39,18 @@ if($rowsCountIds>0){
                 array("message" => "No record found.")
             );
         }
-        if(isset($_GET["dateStart"])) {
-            $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"]);
-            $rowsCountDate = $stmtDate->rowCount();
-            if ($rowsCountDate > 0) {
-                $sumKcal = 0;
-                $rows = $stmtDate->fetchAll();
-                foreach ($rows as $row) {
-                    $sumKcal += $row["number"];
-                }
-                $KcalArray["user".$id]["kcal"]["onDate"] = $sumKcal;
-            }
-        }
+//        if(isset($_GET["dateStart"])) {
+//            $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"]);
+//            $rowsCountDate = $stmtDate->rowCount();
+//            if ($rowsCountDate > 0) {
+//                $sumKcal = 0;
+//                $rows = $stmtDate->fetchAll();
+//                foreach ($rows as $row) {
+//                    $sumKcal += $row["number"];
+//                }
+//                $KcalArray["user".$id["login_id"]]["kcal"]["onDate"] = $sumKcal;
+//            }
+//        }
     }
 }
 

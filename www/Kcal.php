@@ -14,15 +14,17 @@ class Kcal
     }
 
     public function getAllLoginId(){
-        $sqlQuery = "SELECT DISTINCT (id) FROM " . $this->db_table;
+        $sqlQuery = "SELECT DISTINCT (login_id) FROM " . $this->db_table;
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->execute();
         return $stmt;
     }
-    public function getDailyKcal()
+    public function getDailyKcal($loginId)
     {
-        $sqlQuery = "SELECT number FROM " . $this->db_table;
+        $sqlQuery = "SELECT number FROM " . $this->db_table ." WHERE dateRecord = :dateR AND login_id = :login";
         $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bindParam(":dateR",date("Y-m-d"));
+        $stmt->bindParam(":login",$loginId);
         $stmt->execute();
         return $stmt;
     }
