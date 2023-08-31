@@ -172,8 +172,8 @@ fetch(requestDailyKcal)
     .then((response) => response.json())
     .then((data) => {
         var kcal= document.getElementById("todayKcal")
-        kcal.innerText = data.kcal["value"]
-        calcPercentageDish(data.kcal["value"])
+        kcal.innerText = data.user1.kcal["value"]
+        calcPercentageDish(data.user1.kcal["value"])
         kcal.style.color = getRandomColor()
     })
 
@@ -182,8 +182,8 @@ fetch(requestTotalKcal)
     .then((response) => response.json())
     .then((data) => {
         var kcal= document.getElementById("allTimeKcal")
-        kcal.innerText = data.kcal["total"]
-        calcAllTimeDishes(data.kcal["total"])
+        kcal.innerText = data.user1.kcal["total"]
+        calcAllTimeDishes(data.user1.kcal["total"])
         kcal.style.color = getRandomColor()
     })
 
@@ -199,8 +199,8 @@ function onStartDateChange() {
         .then((response) => response.json())
         .then((data) => {
             var kcalFromDate= document.getElementById("kcalFromDate")
-            kcalFromDate.innerText = data.kcal["onDate"]
-            calcChosenTimeDishes(data.kcal["onDate"])
+            kcalFromDate.innerText = data.user1.kcal["onDate"]
+            calcChosenTimeDishes(data.user1.kcal["onDate"])
             kcalFromDate.style.color = getRandomColor()
         })
 

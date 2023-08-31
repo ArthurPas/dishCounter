@@ -39,18 +39,18 @@ if($rowsCountIds>0){
                 array("message" => "No record found.")
             );
         }
-//        if(isset($_GET["dateStart"])) {
-//            $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"]);
-//            $rowsCountDate = $stmtDate->rowCount();
-//            if ($rowsCountDate > 0) {
-//                $sumKcal = 0;
-//                $rows = $stmtDate->fetchAll();
-//                foreach ($rows as $row) {
-//                    $sumKcal += $row["number"];
-//                }
-//                $KcalArray["user".$id["login_id"]]["kcal"]["onDate"] = $sumKcal;
-//            }
-//        }
+        if(isset($_GET["dateStart"])) {
+            $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"],$id["login_id"]);
+            $rowsCountDate = $stmtDate->rowCount();
+            if ($rowsCountDate > 0) {
+                $sumKcal = 0;
+                $rows = $stmtDate->fetchAll();
+                foreach ($rows as $row) {
+                    $sumKcal += $row["number"];
+                }
+                $KcalArray["user".$id["login_id"]]["kcal"]["onDate"] = $sumKcal;
+            }
+        }
     }
 }
 

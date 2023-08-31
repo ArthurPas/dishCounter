@@ -39,10 +39,11 @@ class Kcal
         }
         return false;
     }
-    public function getKcalFromDate($dateR){
-        $sqlQueryFromDate =  "SELECT * FROM ".$this->db_table." WHERE dateRecord >= :paraDate";
+    public function getKcalFromDate($dateR, $loginId){
+        $sqlQueryFromDate =  "SELECT * FROM ".$this->db_table." WHERE dateRecord >= :paraDate AND login_id = :login";
         $stmtDate = $this->conn->prepare($sqlQueryFromDate);
         $stmtDate ->bindParam(":paraDate", $dateR);
+        $stmtDate->bindParam(":login",$loginId);
         $stmtDate->execute();
         return $stmtDate;
     }
