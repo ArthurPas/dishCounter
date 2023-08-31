@@ -8,11 +8,17 @@ include_once 'Database.php';
 include_once 'Kcal.php';
 $database = new Database();
 $db = $database->getConnection();
-$item = new Kcal($db);
-$item->number = intval($_GET["kcal"]);
-$item->dateRecord= date("Y-m-d");
+$kcal = new Kcal($db);
+$account = new Account($db);
 
-if ($item->postDailyKcal()) {
+$account->login = $_GET["login"];
+$loginId = $account->getIdByLogin();
+
+$kcal->number = intval($_GET["kcal"]);
+$kcal->dateRecord= date("Y-m-d");
+$kcal->login_id=$loginId;
+
+if ($kcal->postDailyKcal()) {
     echo '{';
     echo '"message": "Data sent"';
     echo '}';

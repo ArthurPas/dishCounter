@@ -5,6 +5,8 @@ class Kcal
     private $db_table = "DailyKcal";
     public $dateRecord;
 
+    public $login_id;
+
     public $number;
     public function __construct($db)
     {
@@ -19,10 +21,11 @@ class Kcal
         return $stmt;
     }
     public function postDailyKcal(){
-        $sqlQuery = "INSERT INTO ". $this->db_table ."(number, date) VALUES (:number, :now)";
+        $sqlQuery = "INSERT INTO ". $this->db_table ."(number, date,login_id) VALUES (:number, :now,:login)";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bindParam(":number", $this->number);
         $stmt->bindParam(":now",$this->dateRecord);
+        $stmt->bindParam(":login",$this->login_id);
         if($stmt->execute()){
             return true;
         }
