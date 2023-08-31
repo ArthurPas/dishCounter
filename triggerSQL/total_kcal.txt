@@ -1,0 +1,13 @@
+DELIMITER //
+CREATE TRIGGER update_kcalTot AFTER INSERT ON DailyKcal
+FOR EACH ROW
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Total WHERE login_id = NEW.id) THEN  
+        INSERT INTO Total (login_id,kcalTot) VALUES (NEW.login_id, NEW.number);
+    ELSE
+        UPDATE Total    
+        SET kcalTot = kcalTot + NEW.number WHERE login_id=NEW.login_id;
+    END IF;
+END;
+//
+DELIMITER ;

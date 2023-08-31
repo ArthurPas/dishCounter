@@ -5,48 +5,54 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once 'Database.php';
 include_once 'Kcal.php';
 include_once 'Total.php';
-$database = new Database();
-$db = $database->getConnection();
-$Total = new Total($db);
-$dailyKcal = new Kcal($db);
-$stmtDkcal = $dailyKcal->getDailyKcal();
-$rowsCount = $stmtDkcal->rowCount();
-$stmtKcTot = $Total->getTotalKcal();
-$nbTotalKcal = $stmtKcTot->fetch()["kcalTot"];
+
 $KcalArray = array();
 $KcalArray["kcal"] = array();
 
-if($rowsCount > 0){
+$database = new Database();
+$db = $database->getConnection();
 
-    $rows = $stmtDkcal->fetchAll();
-    foreach ($rows as $row){
-        $value = $row["number"];
-        $KcalArray["kcal"]["value"] = $value;
-    }
+$Total = new Total($db);
+$dailyKcal = new Kcal($db);
 
-}
-else{
-    http_response_code(404);
-    echo json_encode(
-        array("message" => "No record found.")
-    );
-}
-$KcalArray["kcal"]["total"] = $nbTotalKcal;
-
-if(isset($_GET["dateStart"])) {
-    $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"]);
-    $rowsCountDate = $stmtDate->rowCount();
-    if ($rowsCountDate > 0) {
-        $sumKcal = 0;
-        $rows = $stmtDate->fetchAll();
-        foreach ($rows as $row) {
-            $sumKcal += $row["number"];
+$stmtAllIds = $dailyKcal->getAllLoginId();
+$rowsCountIds= $stmtAllIds->rowCount();
+if($rowsCountIds>0){
+    $ids= $stmtAllIds->fetchAll();
+    foreach ($ids as $id){
+        $KcalArray["user".$id] = array();
+        $stmtKcTot = $Total->getTotalKcal($id);
+        $KcalArray["user".$id]["kcal"]["total"] = $stmtKcTot->fetch()["kcalTot"];
+        $stmtDkcal = $dailyKcal->getDailyKcal();
+        $rowsCountDaily= $stmtDkcal->rowCount();
+        if($rowsCountDaily > 0){
+            $rows = $stmtDkcal->fetchAll();
+            foreach ($rows as $row){
+                $value = $row["number"];
+                $KcalArray["user".$id]["kcal"]["value"] = $value;
+            }
         }
-        $KcalArray["kcal"]["onDate"] = $sumKcal;
-    } else {
-        echo("non");
-    };
+        else{
+            http_response_code(404);
+            echo json_encode(
+                array("message" => "No record found.")
+            );
+        }
+        if(isset($_GET["dateStart"])) {
+            $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"]);
+            $rowsCountDate = $stmtDate->rowCount();
+            if ($rowsCountDate > 0) {
+                $sumKcal = 0;
+                $rows = $stmtDate->fetchAll();
+                foreach ($rows as $row) {
+                    $sumKcal += $row["number"];
+                }
+                $KcalArray["user".$id]["kcal"]["onDate"] = $sumKcal;
+            }
+        }
+    }
 }
+
 
 $json = json_encode($KcalArray);
 echo $json;

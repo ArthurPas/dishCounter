@@ -13,6 +13,12 @@ class Kcal
         $this->conn = $db;
     }
 
+    public function getAllLoginId(){
+        $sqlQuery = "SELECT DISTINCT (id) FROM " . $this->db_table;
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->execute();
+        return $stmt;
+    }
     public function getDailyKcal()
     {
         $sqlQuery = "SELECT number FROM " . $this->db_table;
@@ -21,7 +27,7 @@ class Kcal
         return $stmt;
     }
     public function postDailyKcal(){
-        $sqlQuery = "INSERT INTO ". $this->db_table ."(number, date,login_id) VALUES (:number, :now,:login)";
+        $sqlQuery = "INSERT INTO ". $this->db_table ." (number, dateRecord,login_id) VALUES (:number, :now, :login)";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bindParam(":number", $this->number);
         $stmt->bindParam(":now",$this->dateRecord);

@@ -9,10 +9,11 @@ class Total
     {
         $this->conn = $db;
     }
-    public function getTotalKcal()
+    public function getTotalKcal($loginId)
     {
-        $sqlQuery = "SELECT kcalTot FROM " . $this->db_table;
+        $sqlQuery = "SELECT kcalTot FROM " . $this->db_table . " WHERE login_id = :login";
         $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bindParam(":login", $loginId);
         $stmt->execute();
         return $stmt;
     }

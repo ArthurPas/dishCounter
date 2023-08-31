@@ -18,9 +18,10 @@ class Account
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bindParam(":login", $this->login);
         if($stmt->execute()){
-            return true;
+            $id = intval($stmt->fetch()["id"]);
+            return $id;
         }
-        return false;
+        return 0;
     }
 
 }
