@@ -34,10 +34,12 @@ class Kcal
         $stmt->bindParam(":number", $this->number);
         $stmt->bindParam(":now",$this->dateRecord);
         $stmt->bindParam(":login",$this->login_id);
-        if($stmt->execute()){
-            return true;
+        try {
+            $stmt->execute();
+        }catch (Exception $e){
+            return false;
         }
-        return false;
+        return true;
     }
     public function getKcalFromDate($dateR, $loginId){
         $sqlQueryFromDate =  "SELECT * FROM ".$this->db_table." WHERE dateRecord >= :paraDate AND login_id = :login";

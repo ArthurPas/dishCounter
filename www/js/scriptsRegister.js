@@ -1,4 +1,4 @@
-// Function to parse URL parameters into an object (CHAT GPT)
+//:TODO fix : import {getURLParams} from 'scripts.js'
 function getURLParams() {
     const searchParams = new URLSearchParams(window.location.search);
     const params = {};
@@ -15,7 +15,7 @@ function getTextError(error){
 // Get the "error" parameter from the URL
 const errorDisplayElement = document.getElementById("errorDisplay");
 const urlParams = getURLParams();
-if(urlParams.error !==""){
+if(urlParams["error"] !==undefined){
     const errorValue = urlParams["error"];
     let container =document.getElementById("container")
     container.setAttribute("class","alert alert-danger")

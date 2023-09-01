@@ -78,6 +78,25 @@ const KCALTACOS= 1350
 const KCALCANFUZE = 66
 
 //Useful functions
+
+
+function getURLParams() {
+    const searchParams = new URLSearchParams(window.location.search);
+    const params = {};
+    for (const [key, value] of searchParams.entries()) {
+        params[key] = value;
+    }
+    return params;
+}
+function setMultipleAttribute(elem, elemAttributes) {
+
+    Object.keys(elemAttributes).forEach(attribute => {
+
+        elem.setAttribute(attribute, elemAttributes[attribute]);
+
+    });
+
+}
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -129,7 +148,7 @@ function createImagesWithNb(nb,path,dish) {
         divImg.appendChild(image)
         if(nb!==1) {
             var nbTitle = document.createElement("h1")
-            nbTitle.innerText = "x" + nb
+            nbTitle.innerText = "x" + nb.toFixed(1)
             divImg.appendChild(nbTitle);
         }
     }
@@ -137,10 +156,10 @@ function createImagesWithNb(nb,path,dish) {
 
 // Kcal Calc
 function calcPercentageDish(kcalBurned){
-    const nbBigM = (kcalBurned/KCALBIGMAC).toFixed(1)
-    const nbPizza= (kcalBurned/KCALPIZZA).toFixed(1)
-    const nbTacos =(kcalBurned/KCALTACOS).toFixed(1)
-    const nbFuzeTea = (kcalBurned/KCALCANFUZE).toFixed(1)
+    const nbBigM = (kcalBurned/KCALBIGMAC)
+    const nbPizza= (kcalBurned/KCALPIZZA)
+    const nbTacos =(kcalBurned/KCALTACOS)
+    const nbFuzeTea = (kcalBurned/KCALCANFUZE)
     createImagesWithNb(nbBigM,"images/bigMac.png","allBigM")
     createImagesWithNb(nbPizza,"images/pizza.png","allPizza")
     createImagesWithNb(nbTacos,"images/tacos.png","allTacos")
@@ -238,4 +257,27 @@ function onStartDateChange() {
 
 calendarStart.addEventListener("change", onStartDateChange);
 
+//Login management
+const logedOrNot = document.getElementById("logedOrNot")
+const urlParams = getURLParams();
+if(urlParams["logedAs"] !==undefined) {
+    let welcomeMessage = document.createElement("h2")
+    welcomeMessage.style.textAlign = "end"
+    welcomeMessage.innerText = "Bienvenue, "+urlParams["logedAs"]
+    logedOrNot.appendChild(welcomeMessage)
+}else{
+    let link = document.createElement("a")
+    link.setAttribute("href","page-register.html")
+    logedOrNot.appendChild(link)
+    let butt = document.createElement("button")
+    butt.innerText = "S'inscrire !"
+    butt.setAttribute("type","button")
+    butt.classList.add("btn")
+    butt.classList.add("btn-primary")
+    butt.classList.add("btn-primary")
+    butt.classList.add("btn-rounded")
+    butt.classList.add("m-b-10")
+    butt.classList.add("m-l-5")
+    link.appendChild(butt)
+}
 

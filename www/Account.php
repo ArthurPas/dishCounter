@@ -36,9 +36,11 @@ class Account
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bindParam(":login",$this->login);
         $stmt->bindParam(":password",$this->password);
-        if($stmt->execute()){
-            return true;
+        try {
+            $stmt->execute();
+        }catch (Exception $e){
+            return false;
         }
-        return false;
+        return true;
     }
 }
