@@ -3802,9 +3802,9 @@ h6.h1 {
 /*    Background Mixins
 --------------------------*/
 .bg-primary {
-  background: #5873fe;
-  color: #ffffff;
-  fill: #5873fe;
+    background: #5873fe;
+    color: #ffffff;
+    fill: #5873fe;
 }
 .bg-success {
   background: #28a745;

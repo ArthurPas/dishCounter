@@ -31,4 +31,14 @@ class Account
         }
         return "unknown";
     }
+    public function createAccount(){
+        $sqlQuery = "INSERT INTO ". $this->db_table ." (login, password) VALUES (:login, :password)";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bindParam(":login",$this->login);
+        $stmt->bindParam(":password",$this->password);
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+    }
 }
