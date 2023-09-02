@@ -43,11 +43,17 @@ class Account
         }
         return true;
     }
-    public function validateLogs(){
-        $sqlQuery = "SELECT FROM ". $this->db_table ." WHERE login = :login AND password = :password";
+    public function validateLogs()
+    {
+        $sqlQuery = "SELECT  * FROM " . $this->db_table . " WHERE login = :login AND password = :password ";
         $stmt = $this->conn->prepare($sqlQuery);
-        $stmt->bindParam(":login",$this->login);
-        $stmt->bindParam(":password",$this->password);
-        return $stmt->execute()->rowCount()==1;//If there is one line it means that there is an account with theses logs
+        $stmt->bindParam(":login", $this->login);
+        $stmt->bindParam(":password", $this->password);
+        try {
+            $stmt->execute();
+        } catch (Exception $e){
+            return $e;
+        }
+        return $stmt->rowCount()==1;
     }
 }
