@@ -76,10 +76,12 @@ const KCALBIGMAC = 504
 const KCALPIZZA = 1000
 const KCALTACOS= 1350
 const KCALCANFUZE = 66
-
+const urlParams = getURLParams();
 //Useful functions
 
-
+function getDataForDefinedUser(data,login){
+    return data.find(item => item.user === login);
+}
 function getURLParams() {
     const searchParams = new URLSearchParams(window.location.search);
     const params = {};
@@ -207,15 +209,23 @@ function createCompeteTab(dataTab){
 }
 
 //Requests
-
+let activeUser = "noUser";
+if(urlParams["logedAs"] !==undefined) {
+    activeUser=urlParams["logedAs"]
+}
 const requestDailyKcal = new Request("https://devapascal.fr/Read.php");
 fetch(requestDailyKcal)
     .then((response) => response.json())
     .then((data) => {
-        var kcal= document.getElementById("todayKcal")
-        kcal.innerText = data[0]["todayValue"] //:TODO replace "user1" by a login system
-        calcPercentageDish(data[0]["todayValue"])
-        kcal.style.color = getRandomColor()
+        let kcal= document.getElementById("todayKcal")
+        if(activeUser!=="noUser"){
+        kcal.innerText = getDataForDefinedUser(data,activeUser)["todayValue"]
+        calcPercentageDish(getDataForDefinedUser(data,activeUser)["todayValue"])
+        }
+        else {
+            kcal.style.color = getRandomColor()
+            kcal.innerText = "connecte toi pour connaitre ta dépense du jour en "
+        }
     })
 
 const requestTotalKcal = new Request("https://devapascal.fr/Read.php"); //TODO: add for the request the loginId of the user
@@ -223,16 +233,18 @@ fetch(requestTotalKcal)
     .then((response) => response.json())
     .then((data) => {
         let kcal= document.getElementById("allTimeKcal")
-        kcal.innerText = data[0]["total"]
-        calcAllTimeDishes(data[0]["total"])
-        kcal.style.color = getRandomColor()
+        if(activeUser!=="noUser"){
+            kcal.innerText = getDataForDefinedUser(data,activeUser)["total"]
+            calcAllTimeDishes(getDataForDefinedUser(data,activeUser)["total"])
+            kcal.style.color = getRandomColor()
+        }
+
     })
 
 const requestAllTotalKcal = new Request("https://devapascal.fr/Read.php"); //TODO: add for the request the loginId of the user
 fetch(requestAllTotalKcal)
     .then((response) => response.json())
     .then((data) => {
-
         createCompeteTab(data)
     })
 
@@ -248,8 +260,8 @@ function onStartDateChange() {
         .then((response) => response.json())
         .then((data) => {
             var kcalFromDate= document.getElementById("kcalFromDate")
-            kcalFromDate.innerText = data[0]["onDate"]
-            calcChosenTimeDishes(data[0]["onDate"])
+            kcalFromDate.innerText = getDataForDefinedUser(data,activeUser)["onDate"]
+            calcChosenTimeDishes(getDataForDefinedUser(data,activeUser)["onDate"])
             kcalFromDate.style.color = getRandomColor()
         })
 
@@ -259,7 +271,7 @@ calendarStart.addEventListener("change", onStartDateChange);
 
 //Login management
 const logedOrNot = document.getElementById("logedOrNot")
-const urlParams = getURLParams();
+const goLogin = document.getElementById("goLogin")
 if(urlParams["logedAs"] !==undefined) {
     let welcomeMessage = document.createElement("h2")
     welcomeMessage.style.textAlign = "end"
@@ -274,10 +286,21 @@ if(urlParams["logedAs"] !==undefined) {
     butt.setAttribute("type","button")
     butt.classList.add("btn")
     butt.classList.add("btn-primary")
-    butt.classList.add("btn-primary")
     butt.classList.add("btn-rounded")
     butt.classList.add("m-b-10")
     butt.classList.add("m-l-5")
     link.appendChild(butt)
+    let linkToLog = document.createElement("a")
+    linkToLog.setAttribute("href","page-login.html")
+    goLogin.appendChild(linkToLog)
+    let buttToLog = document.createElement("button")
+    buttToLog.innerText = "Se connecter !"
+    buttToLog.setAttribute("type","button")
+    buttToLog.classList.add("btn")
+    buttToLog.classList.add("btn-dark")
+    buttToLog.classList.add("btn-rounded")
+    buttToLog.classList.add("m-b-10")
+    buttToLog.classList.add("m-l-5")
+    linkToLog.appendChild(buttToLog)
 }
 
