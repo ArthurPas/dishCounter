@@ -35,10 +35,7 @@ if($rowsCountIds>0){
             }
         }
         else{
-            http_response_code(404);
-            echo json_encode(
-                array("message" => "No record found.")
-            );
+            $KcalArrayTmp["todayValue"]= 0;
         }
         if(isset($_GET["dateStart"])) {
             $stmtDate = $dailyKcal->getKcalFromDate($_GET["dateStart"],$id["login_id"]);

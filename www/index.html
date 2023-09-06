@@ -23,6 +23,7 @@
     <link href="css/lib/bootstrap.min.css" rel="stylesheet">
     <link href="css/lib/helper.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/lib/sweetalert/sweetalert.css" rel="stylesheet">
 </head>
 
 <body>
@@ -44,17 +45,18 @@
                 </div>
                 <!-- /# row -->
                 <!-- :TODO the <canvas> are still here if I see a way to make partial image better with canvas -->
+<!--                Daily-->
                 <section id="main-content">
                     <h2 class="label" >Bilan du jour : <b class="label" id="todayKcal"></b> kcal</h2>
                     <div class="row">
                         <div class="col-lg-3">
-                            <div class="card ">
+                            <div class="card">
                                 <div id="allBigM"> </div>
-                        </div>
-                            <canvas id="partialAllBigM"></canvas>
+                                <canvas id="partialAllBigM"></canvas>
+                            </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="card ">
+                            <div class="card">
                                 <div id="allPizza"></div>
                                 <canvas id="partialAllPizza"></canvas>
                             </div>
@@ -73,9 +75,28 @@
                         </div>
                     </div>
                 </section>
+                <!--Competition-->
+                <section>
+                    <h2 class="label" >Le top  </h2>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><h3>#</h3></th>
+                                        <th><h3>Nom</h3></th>
+                                        <th><h3>Total Kcal</h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="competTabBody"> </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             <!--Bilan ALLTIME -->
                 <section id="allTime">
-                    <h2 class="label" >Bilan depuis le 01/09/23 : <b class="label" id="allTimeKcal"></b> kcal</h2>
+                    <h2 class="label" >Bilan depuis le ??/09/23 : <b class="label" id="allTimeKcal"></b> kcal</h2>
+<!--                    :TODO Set the launch date -->
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="card ">
@@ -104,7 +125,7 @@
                     </div>
                 </section>
 
-                <!--Bilan ALLTIME -->
+                <!--Bilan from date -->
                 <section id="AllFromDate">
                     <h2 class="label" >Bilan depuis le <label for="startDate"></label><input class="caldr" type="date" id="startDate" name="startDate"  /><b id="kcalFromDate"></b> : kcal</h2>
                     <div class="row">
@@ -134,34 +155,12 @@
                         </div>
                     </div>
                 </section>
-                <!--Competition-->
-                <section>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Top</th>
-                                    <th>Nom</th>
-                                    <th>Total Kcal</th>
-                                </tr>
-                                </thead>
-                                <tbody id="competTabBody">
-<!--                                <tr>-->
-<!--                                    <th scope="row">1</th>-->
-<!--                                    <td>Kolor Tea Shirt For Man</td>-->
-<!--                                    <td><span class="badge badge-primary">Sale</span></td>-->
-<!--                                    <td class="color-primary">$21.56</td>-->
-<!--                                </tr>-->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
+
             </div>
         </div>
     </div>
-
+    <script type="text/javascript" src="js/lib/sweetalert/sweetalert.init.js"></script>
+    <script type="text/javascript" src="js/lib/sweetalert/sweetalert.min.js"></script>
     <!-- jquery vendor -->
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/jquery.nanoscroller.min.js"></script>

@@ -18,6 +18,13 @@
     <link href="css/lib/bootstrap.min.css" rel="stylesheet">
     <link href="css/lib/helper.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="css/lib/weather-icons.css" rel="stylesheet" />
+    <link href="css/lib/menubar/sidebar.css" rel="stylesheet">
+    <link href="css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="css/lib/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/lib/helper.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body class="bg-primary">
@@ -32,9 +39,9 @@
                             <h4>Pour s'enregistrer c'est ici !</h4>
                             <form action="https://devapascal.fr/SubmitRegister.php" method="POST">
 
+                                <div id="container"></div>
                                 <div class="form-group">
                                     <p><b>Ton pseudo (qui sera ton login)</b></p>
-                                    <div id="container"></div>
                                     <input class="form-control" name="login" placeholder="login">
                                 </div>
                                 <div class="form-group">
@@ -44,12 +51,12 @@
                                         donc je peux tout voir ! Ne mets pas ton mot de passe habituel !
                                         Mets n'importe quoi, et si tu ne t'en souviens plus, je peux te le redonner
                                     </div>
-                                    <input type="password" class="form-control" name="password" placeholder="mot de passe">
+                                    <input id="inputPwd" type="password" class="form-control" name="password" placeholder="mot de passe">
                                 </div>
                                 <button id="submitBtn" type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Go !</button>
                             </form>
                             <div class="register-link m-t-15 text-center">
-                                <p>T'as déjà un compte ?<a href="#"> connecte toi</a></p>
+                                <p>T'as déjà un compte ?<a id="test" href="#"> connecte toi</a></p>
                             </div>
                         </div>
                     </div>
@@ -57,6 +64,8 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="js/lib/sweetalert/sweetalert.init.js"></script>
+    <script type="text/javascript" src="js/lib/sweetalert/sweetalert.min.js"></script>
     <script src="js/scriptsRegister.js"></script>
 </body>
 

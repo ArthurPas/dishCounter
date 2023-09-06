@@ -18,7 +18,7 @@
     });
 
 
-    /* 
+    /*
     ------------------------------------------------
     Sidebar open close animated humberger icon
     ------------------------------------------------*/
@@ -31,7 +31,7 @@
 
 
 
-    /* TO DO LIST 
+    /* TO DO LIST
     --------------------*/
     $(".tdl-new").on('keypress', function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -66,7 +66,7 @@
     });
 
 
-    
+
 
 
 
@@ -77,8 +77,12 @@ const KCALPIZZA = 1000
 const KCALTACOS= 1350
 const KCALCANFUZE = 66
 const urlParams = getURLParams();
-//Useful functions
+let activeUser = "noUser";
+if(urlParams["logedAs"] !==undefined) {
+    activeUser=urlParams["logedAs"]
+}
 
+//Useful functions
 function getDataForDefinedUser(data,login){
     return data.find(item => item.user === login);
 }
@@ -90,6 +94,7 @@ function getURLParams() {
     }
     return params;
 }
+
 function setMultipleAttribute(elem, elemAttributes) {
 
     Object.keys(elemAttributes).forEach(attribute => {
@@ -97,7 +102,6 @@ function setMultipleAttribute(elem, elemAttributes) {
         elem.setAttribute(attribute, elemAttributes[attribute]);
 
     });
-
 }
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
@@ -138,10 +142,10 @@ function createImagesWithNb(nb,path,dish) {
             divImg.appendChild(partialImage);
             //:TODO find how to cut the image and not just change its witdh
             let nbTitle = document.createElement("b")
-            nbTitle.innerText = "+" + nbPartialDish.toFixed(1)
+            nbTitle.innerText = "+" + nbPartialDish.toFixed(2)
             divImg.appendChild(nbTitle);
         }
-        }else{
+    }else{
         let divImg = document.getElementById(dish)
         let image = new Image();
         image.src = path;
@@ -149,13 +153,14 @@ function createImagesWithNb(nb,path,dish) {
         image.style.height = "10em"
         divImg.appendChild(image)
         if(nb!==1) {
-            var nbTitle = document.createElement("h1")
-            nbTitle.innerText = "x" + nb.toFixed(1)
+            let nbTitle = document.createElement("h1")
+            let nbFixed = nb.toFixed(2)
+            nbTitle.innerText = "x" + nbFixed
             divImg.appendChild(nbTitle);
         }
     }
-}
 
+}
 // Kcal Calc
 function calcPercentageDish(kcalBurned){
     const nbBigM = (kcalBurned/KCALBIGMAC)
@@ -166,33 +171,35 @@ function calcPercentageDish(kcalBurned){
     createImagesWithNb(nbPizza,"images/pizza.png","allPizza")
     createImagesWithNb(nbTacos,"images/tacos.png","allTacos")
     createImagesWithNb(nbFuzeTea,"images/iceTea.png","allFuze")
-}
 
+}
 function calcAllTimeDishes(totalKcal){
-    createImagesWithNb((totalKcal/KCALBIGMAC).toFixed(1),"images/bigMac.png","allTimeBigM")
-    createImagesWithNb((totalKcal/KCALPIZZA).toFixed(1),"images/pizza.png","allTimePizza")
-    createImagesWithNb((totalKcal/KCALTACOS).toFixed(1),"images/tacos.png","allTimeTacos")
-    createImagesWithNb((totalKcal/KCALCANFUZE).toFixed(1),"images/iceTea.png","allTimeFuze")
-}
+    createImagesWithNb((totalKcal/KCALBIGMAC),"images/bigMac.png","allTimeBigM")
+    createImagesWithNb((totalKcal/KCALPIZZA),"images/pizza.png","allTimePizza")
+    createImagesWithNb((totalKcal/KCALTACOS),"images/tacos.png","allTimeTacos")
+    createImagesWithNb((totalKcal/KCALCANFUZE),"images/iceTea.png","allTimeFuze")
 
+}
 function calcChosenTimeDishes(totalKcal){
     removeAllChildNodes(document.getElementById("chosenTimeBigM"));
     removeAllChildNodes(document.getElementById("chosenTimePizza"));
     removeAllChildNodes(document.getElementById("chosenTimeTacos"));
     removeAllChildNodes(document.getElementById("chosenTimeFuze"));
-    createImagesWithNb((totalKcal/KCALBIGMAC).toFixed(1),"images/bigMac.png","chosenTimeBigM")
-    createImagesWithNb((totalKcal/KCALPIZZA).toFixed(1),"images/pizza.png","chosenTimePizza")
-    createImagesWithNb((totalKcal/KCALTACOS).toFixed(1),"images/tacos.png","chosenTimeTacos")
-    createImagesWithNb((totalKcal/KCALCANFUZE).toFixed(1),"images/iceTea.png","chosenTimeFuze")
+    createImagesWithNb((totalKcal/KCALBIGMAC),"images/bigMac.png","chosenTimeBigM")
+    createImagesWithNb((totalKcal/KCALPIZZA),"images/pizza.png","chosenTimePizza")
+    createImagesWithNb((totalKcal/KCALTACOS),"images/tacos.png","chosenTimeTacos")
+    createImagesWithNb((totalKcal/KCALCANFUZE),"images/iceTea.png","chosenTimeFuze")
+
 }
 
 //Competion Tab
-
 const tbody = document.getElementById("competTabBody")
 function createCompeteTab(dataTab){
     dataTab.sort((a, b) => b.total - a.total);
     let i = 1
+    let totalMax = 0
     for(let data of dataTab){
+        //if(data["user"]!== "Dev"){
         let tr = document.createElement("tr")
         tbody.appendChild(tr)
         let tdRank = document.createElement("td")
@@ -204,23 +211,39 @@ function createCompeteTab(dataTab){
         tr.appendChild(tdRank)
         tr.appendChild(tdName)
         tr.appendChild(tdTotal)
-        i++
-    }
-}
+        if(i===1){
+            totalMax = data["total"]
+        }
+        if(activeUser!=="noUser") {
+            if (i === 1 && data["user"] === activeUser) {
+                swal("Bien joué !!", "Tu es en tête du classement !", "success");
 
-//Requests
-let activeUser = "noUser";
-if(urlParams["logedAs"] !==undefined) {
-    activeUser=urlParams["logedAs"]
+
+            } else if(data["user"] === activeUser) {
+                let totalGap =totalMax - data["total"]
+                swal("Yes !", "Tu es aujourd'hui sur la " + i + " eme position du classement, plus que "+totalGap+" kcal pour atteindre le sommet",);
+            }
+        }
+        i++
+        //}
+    }
+
 }
+//Requests
 const requestDailyKcal = new Request("https://devapascal.fr/Read.php");
 fetch(requestDailyKcal)
     .then((response) => response.json())
     .then((data) => {
         let kcal= document.getElementById("todayKcal")
         if(activeUser!=="noUser"){
-        kcal.innerText = getDataForDefinedUser(data,activeUser)["todayValue"]
-        calcPercentageDish(getDataForDefinedUser(data,activeUser)["todayValue"])
+            let nbKcal =  getDataForDefinedUser(data,activeUser)["todayValue"]
+            let date = new Date()
+            if(date.getHours()<21 && activeUser!=="Dev"){
+                kcal.innerText = "Reviens à 21h pour voir tes "
+            }else{
+                kcal.innerText = nbKcal
+                calcPercentageDish(nbKcal)
+            }
         }
         else {
             kcal.style.color = getRandomColor()
@@ -234,8 +257,9 @@ fetch(requestTotalKcal)
     .then((data) => {
         let kcal= document.getElementById("allTimeKcal")
         if(activeUser!=="noUser"){
-            kcal.innerText = getDataForDefinedUser(data,activeUser)["total"]
-            calcAllTimeDishes(getDataForDefinedUser(data,activeUser)["total"])
+            let nbKcal = getDataForDefinedUser(data,activeUser)["total"]
+            kcal.innerText = nbKcal
+            calcAllTimeDishes(nbKcal)
             kcal.style.color = getRandomColor()
         }
 
@@ -249,26 +273,30 @@ fetch(requestAllTotalKcal)
     })
 
 //Calendar
-const calendarStart = document.getElementById("startDate");
+const calendarStart = document.getElementById("startDate")
 const today = new Date()
+const yesterday = new Date()
+yesterday.setDate(yesterday.getDate() - 1)
 calendarStart.max = today.toJSON().slice(0, 10);
-calendarStart.min = "2023-08-01" //:TODO @1st september set to 2023-09-01 for real datas
+calendarStart.min = "2023-09-02" //:TODO @1st september set to 2023-09-01 for real datas
+calendarStart.value = yesterday.toJSON().slice(0, 10);
 function onStartDateChange() {
     let chosenDate = calendarStart.value
     const requestKcalOnStartDate = new Request("https://devapascal.fr/Read.php?dateStart="+chosenDate);
     fetch(requestKcalOnStartDate)
         .then((response) => response.json())
         .then((data) => {
-            var kcalFromDate= document.getElementById("kcalFromDate")
-            kcalFromDate.innerText = getDataForDefinedUser(data,activeUser)["onDate"]
-            calcChosenTimeDishes(getDataForDefinedUser(data,activeUser)["onDate"])
+            let kcalFromDate= document.getElementById("kcalFromDate")
+            let nbKcal = getDataForDefinedUser(data,activeUser)["onDate"]
+            kcalFromDate.innerText = nbKcal
+            calcChosenTimeDishes(nbKcal)
             kcalFromDate.style.color = getRandomColor()
         })
 
 }
 
 calendarStart.addEventListener("change", onStartDateChange);
-
+onStartDateChange() // Initialize with yesterday
 //Login management
 const logedOrNot = document.getElementById("logedOrNot")
 const goLogin = document.getElementById("goLogin")
@@ -303,4 +331,3 @@ if(urlParams["logedAs"] !==undefined) {
     buttToLog.classList.add("m-l-5")
     linkToLog.appendChild(buttToLog)
 }
-

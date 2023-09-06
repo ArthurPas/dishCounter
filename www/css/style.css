@@ -77,6 +77,8 @@
 --------------- */
 .card-body {
   padding: 0;
+  margin-top: 5em;
+  margin-bottom: 5em;
 }
 .card {
   background: #ffffff;
@@ -4519,6 +4521,6 @@ h6.h1 {
   height : 15em;
 }
 .caldr{
-border: none;
-  background-color: rgba(88, 115, 254, 0.04);
+    border: solid;
+    background-color: rgba(88, 115, 254, 0.04);
 }

@@ -13,7 +13,13 @@ $db = $database->getConnection();
 $account = new Account($db);
 $account->login=$_POST["login"];
 $account->password=$_POST["password"];
-if($account->createAccount()){
+if($_POST["login"]==""){
+    header('Location: https://devapascal.fr/page-register.html?error=noLogin');
+}
+else if ($_POST["password"]=""){
+    header('Location: https://devapascal.fr/page-register.html?error=noPassword');
+}
+else if($account->createAccount()){
     header('Location: https://devapascal.fr?logedAs='.$account->login);
 } else{
     header('Location: https://devapascal.fr/page-register.html?error=loginExist');

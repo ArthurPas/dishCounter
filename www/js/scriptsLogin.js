@@ -23,4 +23,5 @@ if(urlParams["error"] !==undefined){
     let container =document.getElementById("containerError")
     container.setAttribute("class","alert alert-danger")
     container.innerText = "Oups ..." + getTextError(errorValue)
+    sweetAlert("Oups ..." ,""+ getTextError(errorValue),"error");
 }
