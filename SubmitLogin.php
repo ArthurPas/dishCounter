@@ -9,7 +9,7 @@ $account = new Account($db);
 $account->login = $_POST["login"];
 $account->password = $_POST["password"];
 if ($account->validateLogs()) {
-    header('Location: https://devapascal.fr?logedAs=' . $account->login);
+    header('Location: https://devapascal.fr/dishCounter?logedAs=' . $account->login);
 } else {
-    header('Location: https://devapascal.fr/page-login.html?error=badCredentials');
+    header('Location: https://devapascal.fr/dishCounter/page-login.html?error=badCredentials');
 }

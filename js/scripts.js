@@ -199,7 +199,7 @@ function createCompeteTab(dataTab){
     let i = 1
     let totalMax = 0
     for(let data of dataTab){
-        //if(data["user"]!== "Dev"){
+        if(data["user"]!== "Dev"){
         let tr = document.createElement("tr")
         tbody.appendChild(tr)
         let tdRank = document.createElement("td")
@@ -225,12 +225,12 @@ function createCompeteTab(dataTab){
             }
         }
         i++
-        //}
+        }
     }
 
 }
 //Requests
-const requestDailyKcal = new Request("https://devapascal.fr/Read.php");
+const requestDailyKcal = new Request("https://devapascal.fr/dishCounter/Read.php");
 fetch(requestDailyKcal)
     .then((response) => response.json())
     .then((data) => {
@@ -251,7 +251,7 @@ fetch(requestDailyKcal)
         }
     })
 
-const requestTotalKcal = new Request("https://devapascal.fr/Read.php"); //TODO: add for the request the loginId of the user
+const requestTotalKcal = new Request("https://devapascal.fr/dishCounter/Read.php"); //TODO: add for the request the loginId of the user
 fetch(requestTotalKcal)
     .then((response) => response.json())
     .then((data) => {
@@ -265,7 +265,7 @@ fetch(requestTotalKcal)
 
     })
 
-const requestAllTotalKcal = new Request("https://devapascal.fr/Read.php"); //TODO: add for the request the loginId of the user
+const requestAllTotalKcal = new Request("https://devapascal.fr/dishCounter/Read.php"); //TODO: add for the request the loginId of the user
 fetch(requestAllTotalKcal)
     .then((response) => response.json())
     .then((data) => {
@@ -282,7 +282,7 @@ calendarStart.min = "2023-09-02" //:TODO @1st september set to 2023-09-01 for re
 calendarStart.value = yesterday.toJSON().slice(0, 10);
 function onStartDateChange() {
     let chosenDate = calendarStart.value
-    const requestKcalOnStartDate = new Request("https://devapascal.fr/Read.php?dateStart="+chosenDate);
+    const requestKcalOnStartDate = new Request("https://devapascal.fr/dishCounter/Read.php?dateStart="+chosenDate);
     fetch(requestKcalOnStartDate)
         .then((response) => response.json())
         .then((data) => {

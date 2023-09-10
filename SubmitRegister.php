@@ -14,13 +14,13 @@ $account = new Account($db);
 $account->login=$_POST["login"];
 $account->password=$_POST["password"];
 if($_POST["login"]==""){
-    header('Location: https://devapascal.fr/page-register.html?error=noLogin');
+    header('Location: https://devapascal.fr/dishCounter/page-register.html?error=noLogin');
 }
 else if ($_POST["password"]=""){
-    header('Location: https://devapascal.fr/page-register.html?error=noPassword');
+    header('Location: https://devapascal.fr/dishCounter/page-register.html?error=noPassword');
 }
 else if($account->createAccount()){
-    header('Location: https://devapascal.fr?logedAs='.$account->login);
+    header('Location: https://devapascal.fr/dishCounter?logedAs='.$account->login);
 } else{
-    header('Location: https://devapascal.fr/page-register.html?error=loginExist');
+    header('Location: https://devapascal.fr/dishCounter/page-register.html?error=loginExist');
 }
